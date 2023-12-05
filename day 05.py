@@ -9,6 +9,14 @@ def move_crates(crates,count,start,end):
     for _ in range(count):
         a = crates[start-1].pop()
         crates[end-1].append(a)
+def move_crates_9001(crates,count,start,end):
+    temp_stack = []
+    for _ in range(count):
+        a = crates[start-1].pop()
+        temp_stack.append(a)
+    for _ in range(count):
+        a = temp_stack.pop()
+        crates[end-1].append(a)
 def main():
 # Get the name of the Python script
     script_name = os.path.basename(__file__)
@@ -30,7 +38,7 @@ def main():
                 stacks = reverse_stacks(stacks_reversed)
             if line.startswith('move'):
                 line_a = line.split(' ')
-                move_crates(stacks,int(line_a[1]),int(line_a[3]),int(line_a[5]))
+                move_crates_9001(stacks,int(line_a[1]),int(line_a[3]),int(line_a[5]))
             print(line)
     for stack in stacks:
         print(f'{stack.pop()}',end='')

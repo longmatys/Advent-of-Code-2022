@@ -7,10 +7,11 @@ def main():
         for line in f.readlines():
             line = line.strip()
             #print(line)
-            for i in range(len(line)-3):
-                a= set(line[i:i+4])
-                if len(set(line[i:i+4]))==4:
-                    print(f'Nasel jsem diff na {i}.pozici, odpoved je {i+4}')
+            marker = 14
+            for i in range(len(line)-marker-1):
+                a= set(line[i:i+marker])
+                if len(set(line[i:i+marker]))==marker:
+                    print(f'Nasel jsem diff na {i}.pozici, odpoved je {i+marker}')
                     break
 if __name__ == '__main__':
     main()

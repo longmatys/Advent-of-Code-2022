@@ -89,12 +89,25 @@ def main():
             else:
                 getattr(fs, f'cmd_{fs.running_command}_args' )(line)
     dumped = fs.dump_n(fs.root,0)
-    print(dumped)
+    
     counter = 0
     for item in dumped:
         if item[1] <= 100000 and item[2]=='dir':
             counter+=item[1]
-            print(item)
+    
     print(counter)
+    size_fs = 70000000
+    size_needed = 30000000
+    size_available = size_fs - dumped[0][1]
+    size_to_free = size_needed - size_available
+    
+    candidate = None
+    for item in sorted(dumped,key=lambda x: x[1], reverse=True):
+        if item[1] > size_to_free:
+            candidate = item
+        else:
+            print(candidate)
+            break
+    
 if __name__ == '__main__':
     main()

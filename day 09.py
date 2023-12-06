@@ -21,8 +21,8 @@ class pole:
     tail_pole: list = field(default_factory=lambda: [[0,0] for _ in range(10)])
     x_tail: int = 0
     y_tail: int = 0
-    visited: dict = field(default_factory=lambda: {(0,0):1})
-    visited2: dict = field(default_factory=lambda: {(0,0):1})
+    visited: set = field(default_factory=lambda: {tuple([0,0])})
+    visited2: set = field(default_factory=lambda: {tuple([0,0])})
     
     def update_head(self,move):
         self.x_head+=move[0]
@@ -41,7 +41,7 @@ class pole:
         ret = self.get_new_position([self.x_head,self.y_head],[self.x_tail,self.y_tail])
         if ret:
             [self.x_tail, self.y_tail] = ret
-            self.visited[tuple(ret)] = 1    
+            self.visited.add(tuple(ret))    
         return
         
         
@@ -57,6 +57,7 @@ def main():
     input_file = script_name.split('.')[0]+'.input.txt'
     
     moje_pole = pole()
+    
     with open(input_file) as f:
         for line in f.readlines():
             line = line.strip()
@@ -67,6 +68,6 @@ def main():
             line_a = line.split(' ')
             moje_pole.move(line_a[0],int(line_a[1]))
     print(moje_pole.visited)
-    print(len(moje_pole.visited), len(moje_pole.visited2.keys()))
+    print(len(moje_pole.visited), len(moje_pole.visited2))
 if __name__ == '__main__':
     main()

@@ -17,9 +17,10 @@ def get_corners(line):
     z =1
     return [[min(x),min(y)], [max(x),max(y)]]
 def tiskni_mapu(mapa):
-    logging.debug('Aktualni mapa:')
-    for line in mapa:
-        logging.debug(''.join(line))
+    if logging.getLogger().getEffectiveLevel() == logging.DEBUG:
+        logging.debug('Aktualni mapa:')
+        for line in mapa:
+            logging.debug(''.join(line))
 def get_dalsi_misto(mapa,bod):
     #pohyb dolu
     if len(mapa) == bod[0]:
@@ -62,6 +63,10 @@ def main():
         lines = f.readlines()
         corners = get_corners(' -> '.join(lines))
         logging.debug(f'Nasel jsem rohy: {corners}')
+    corners[0][1]
+    podlaha = f'0,{corners[1][0]+2} -> 1000,{corners[1][0]+2}'
+    lines.append(podlaha)
+    corners = get_corners(' -> '.join(lines))
     mapa = [['.']*(corners[1][1] - corners[0][1]+1) for _ in range(corners[1][0] - corners[0][0]+1)]
     for line in lines:
         logging.debug(f'Zpracovavam kamenny segment {line}')
@@ -76,8 +81,13 @@ def main():
                 start_bod = end_bod
     round = 0
     while not sypej(mapa,udelej_offset_k_mape(corners[0][1],[0,500])):
+        x = udelej_offset_k_mape(corners[0][1],[0,500])
+        if mapa[x[0]][x[1]] == 'o':
+            break
         round+=1
-        if round % 100 == 0:
+        if round % 10 == 0:
+            logging.error(f'Sypu uz {round} kamen')
+        if round % 1000 == 0 and False:
             logging.getLogger().setLevel(logging.DEBUG)
         else:
             logging.getLogger().setLevel(logging.CRITICAL)

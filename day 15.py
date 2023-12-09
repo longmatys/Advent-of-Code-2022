@@ -32,7 +32,7 @@ def get_nonbeacon_positions(sensors, focus_y):
             ranges[-1][1] = max(ranges[-1][1],a[1])
         else:
             ranges.append(a)
-    return ranges[0][1] - ranges[0][0]
+    return ranges
     
     #beacons_and_sensors_rectangles = [ get_corners(bac[0],bac[1]) for bac in sensors]
     
@@ -54,8 +54,23 @@ def main():
                sensors.append([[int(m.group(1)),int(m.group(2))],[int(m.group(3)),int(m.group(4))]]) 
             else:
                 logging.debug(f'Nepodarilo se mi rozpoznat souradnice')
-    result = get_nonbeacon_positions(sensors, 2000000)
-    print(result)
+    ranges = get_nonbeacon_positions(sensors, 2000000)
+    
+    print(ranges[0][1] - ranges[0][0])
+    #for i in range(3409989):
+    for i in [2836447,2836448]:
+        
+        logging.debug(f'Prochazim {i} kolo - {len(ranges)} = {ranges}')
+        ranges = get_nonbeacon_positions(sensors, i)
+        if len(ranges)>1:
+            logging.debug(f'Prochazim {i} kolo - {len(ranges)} = {ranges}')
+        if ranges[0][0] < 0 or ranges[0][1] > 4000000:
+            continue
+        else:
+            logging.debug(f'Kandidat {i} kolo - {len(ranges)} = {ranges}')
+        
+    
     #5667228 is too high
+    #11345799409990 is too low
 if __name__ == '__main__':
     main()
